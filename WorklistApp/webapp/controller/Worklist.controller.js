@@ -16,6 +16,12 @@ sap.ui.define([
 
 				});
 				this.setModel(oViewModel, "worklistView");
+			},
+
+			onSearch(oEvent){
+				const sValue = oEvent.getParameter('query');
+				const oTable = this.getView().byId('table');
+				oTable.getBinding('items').filter(!!sValue.length ? [new Filter('DocumentNumber', FilterOperator.Contains, sValue)] : []);
 			}
 		});
 	}
