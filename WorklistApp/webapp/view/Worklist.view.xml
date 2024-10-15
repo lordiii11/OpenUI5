@@ -24,11 +24,8 @@
 						descending: false
 					}
 				}"
-				noDataText="{worklistView>/tableNoDataText}"
-				busyIndicatorDelay="{worklistView>/tableBusyDelay}"
 				growing="true"
-				growingScrollToLoad="true"
-				updateFinished="onUpdateFinished">
+				growingScrollToLoad="true">
 
 				<headerToolbar>
 					<Toolbar>
@@ -44,8 +41,23 @@
 				</headerToolbar>
 
 				<columns>
-					<Column id="nameColumn">
-						<Text text="{i18n>tableNameColumnTitle}" id="nameColumnTitle"/>
+					<Column>
+						<Text text="{i18n>tableNameColumnDocumentNumber}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>tableNameColumnDocumentDate}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>tableNameColumnPlantText}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>tableNameColumnRegionText}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>tableNameColumnDescription}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>tableNameColumnCreated}"/>
 					</Column>
 				</columns>
 
@@ -57,16 +69,30 @@
 							<ObjectIdentifier
 								title="{DocumentNumber}"/>
 						</cells>
+						<cells>
+							<ObjectIdentifier
+								title="{DocumentDate}"/>
+						</cells>
+						<cells>
+							<ObjectIdentifier
+								title="{PlantText}"/>
+						</cells>
+						<cells>
+							<ObjectIdentifier
+								title="{RegionText}"/>
+						</cells>
+						<cells>
+							<ObjectIdentifier
+								title="{Description}"/>
+						</cells>
+						<cells>
+							<ObjectIdentifier
+								title="{Created}"/>
+						</cells>
 					</ColumnListItem>
 				</items>
 			</Table>
 		</semantic:content>
-
-		<semantic:sendEmailAction>
-			<semantic:SendEmailAction id="shareEmail" press="onShareEmailPress"/>
-		</semantic:sendEmailAction>
-
-
 	</semantic:SemanticPage>
 
 </mvc:View>
