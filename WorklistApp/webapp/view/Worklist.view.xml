@@ -16,7 +16,8 @@
 				}
 			}"
 			growing="true"
-			growingScrollToLoad="true">
+			growingScrollToLoad="true"
+			growingThreshold="15">
 
 			<headerToolbar>
 				<Toolbar>
