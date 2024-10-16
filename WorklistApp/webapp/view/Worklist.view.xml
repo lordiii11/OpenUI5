@@ -22,8 +22,13 @@
 				<Toolbar>
 					<ToolbarSpacer />
 					<SearchField
-						tooltip="{i18n>worklistSearchTooltip}"
-						search="onSearch"
+						tooltip="{i18n>worklistSearchTooltipDocumentNumber}"
+						search="onSearchByDocumentNumber"
+						width="auto">
+					</SearchField>
+					<SearchField
+						tooltip="{i18n>worklistSearchTooltipPlantText}"
+						search="onSearchByPlantText"
 						width="auto">
 					</SearchField>
 				</Toolbar>
