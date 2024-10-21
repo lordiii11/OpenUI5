@@ -4,8 +4,10 @@ sap.ui.define([
 		"zjblessons/WorklistApp/model/formatter",
 		"sap/ui/model/Filter",
 		"sap/ui/model/FilterOperator",
-		"sap/ui/model/Sorter"
-	], function (BaseController, JSONModel, formatter, Filter, FilterOperator, Sorter) {
+		"sap/ui/model/Sorter",
+		"sap/ui/core/Fragment",
+		"sap/f/cards/Header"
+	], function (BaseController,JSONModel,formatter,Filter,FilterOperator,Sorter,Fragment,Header) {
 		"use strict";
 
 		return BaseController.extend("zjblessons.WorklistApp.controller.Worklist", {
@@ -56,6 +58,11 @@ sap.ui.define([
 						}),
 						new sap.m.Text({
 							text: '{Created}'
+						}),
+						new sap.m.Button({
+							icon: this.getResourceBundle().getText('iDecline'),
+							type: 'Transparent',
+							press: this.onButtonPressDelete.bind(this)
 						})
 					]
 				});
@@ -76,6 +83,71 @@ sap.ui.define([
 				const oTable = this.getView().byId('table');
 				oTable.getBinding('items').filter(sValue.length ? [new Filter(sFieldName, sOperator, sValue)] : []);
 			},
+
+			onButtonPressCreate() {
+				this._loadCreateDialog();
+			},
+
+			onButtonPressDelete(oEvent) {
+				const oBindingContext = oEvent.getSource().getBindingContext(),
+					sKey = this.getModel().createKey('/zjblessons_base_Headers', {
+					HeaderID: oBindingContext.getProperty('HeaderID')
+				});
+				
+				sap.m.MessageBox.confirm("Вы уверены, что хотите удалить эту запись?", {
+					title: "Подтверждение удаления",
+					actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],
+					onClose: (sAction) => {
+						if(sAction === sap.m.MessageBox.Action.OK) {
+							this.getModel().remove(sKey, {
+								success: function () {
+									sap.m.MessageToast.show("Запись успешно удалена");
+								},
+								error: function () {
+									sap.m.MessageToast.show("Ошибка при удалении записи");
+								}
+							})
+						}
+					}
+				})
+			},
+
+			_loadCreateDialog: async function() {
+				if(!this._oDialog) {
+					this._oDialog = await Fragment.load({
+						name: 'zjblessons.WorklistApp.view.fragment.CreateDialogWindow',
+						controller: this,
+						id: 'Dialog'
+					}).then(oDialog => {
+						this.getView().addDependent(oDialog);
+						return oDialog;
+					});
+				}				
+				this._oDialog.open();
+			},
+
+			onDialogBeforeOpen(oEvent) {
+				const oDialog = oEvent.getSource(),
+				oParams = {
+					Version: 'A'
+				},
+				oEntry = this.getModel().createEntry('/zjblessons_base_Headers', {properties: oParams});
+				oDialog.setBindingContext(oEntry);
+			},
+			
+			onExitButtonPress() {
+				this.getModel().resetChanges();
+				this._oDialog.close();
+			},
+			
+			onSaveButtonPress(oEvent) {
+				this.getModel().submitChanges({
+					success: () => {
+						this._bindTable();
+					}
+				});
+				this._oDialog.close();
+			}
 		});
 	}
 );

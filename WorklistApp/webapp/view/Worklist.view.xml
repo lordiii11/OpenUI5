@@ -25,6 +25,10 @@
 						search="onSearchByPlantText"
 						width="auto">
 					</SearchField>
+					<Button 
+					icon="{i18n>iAdd}"
+					type="Ghost"
+					press="onButtonPressCreate"/>
 				</Toolbar>
 			</headerToolbar>
 
@@ -46,6 +50,9 @@
 				</Column>
 				<Column>
 					<Text text="{i18n>tableNameColumnCreated}"/>
+				</Column>
+				<Column width="3%">
+					<Text text=""/>
 				</Column>
 			</columns>
 		</Table>
