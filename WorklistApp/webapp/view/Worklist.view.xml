@@ -16,6 +16,12 @@
 				<Toolbar>
 					<Title id="tableCount" text="{= ${worklistView>/sCount}}"/>
 					<ToolbarSpacer />
+					<DateRangeSelection
+                        id="dateRangeSelection"
+                        delimiter=" - "
+                        displayFormat="yyyy-MM-dd"
+                        change="onDateRangeChange"
+                        width="auto"/>
 					<SearchField
 						tooltip="{i18n>worklistSearchTooltipDocumentNumber}"
 						search="onSearchByDocumentNumber"

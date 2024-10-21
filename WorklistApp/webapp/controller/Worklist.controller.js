@@ -165,6 +165,25 @@ sap.ui.define([
 			onButtonPressRefresh() {
 				this._bindTable();
 				sap.m.MessageToast.show("Данные успешно обновлены");
+			},
+
+			onDateRangeChange: function (oEvent) {
+				const oDateRange = oEvent.getSource().getDateValue(),
+					  oEndDate = oEvent.getSource().getSecondDateValue();
+				
+				let aFilters = [];
+			
+				if (oDateRange && oEndDate) {
+					aFilters.push(new sap.ui.model.Filter({
+						path: "DocumentDate",
+						operator: sap.ui.model.FilterOperator.BT,
+						value1: oDateRange,
+						value2: oEndDate
+					}));
+				}
+			
+				const oTable = this.getView().byId("table");
+				oTable.getBinding("items").filter(aFilters);
 			}
 		});
 	}
