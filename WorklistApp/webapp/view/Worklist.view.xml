@@ -14,6 +14,7 @@
 
 			<headerToolbar>
 				<Toolbar>
+					<Title id="tableCount" text="{= ${worklistView>/sCount}}"/>
 					<ToolbarSpacer />
 					<SearchField
 						tooltip="{i18n>worklistSearchTooltipDocumentNumber}"
