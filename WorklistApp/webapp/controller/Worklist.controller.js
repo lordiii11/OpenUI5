@@ -147,6 +147,11 @@ sap.ui.define([
 					}
 				});
 				this._oDialog.close();
+			},
+
+			onButtonPressRefresh() {
+				this._bindTable();
+				sap.m.MessageToast.show("Данные успешно обновлены");
 			}
 		});
 	}

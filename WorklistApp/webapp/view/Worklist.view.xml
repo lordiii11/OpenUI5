@@ -29,6 +29,10 @@
 					icon="{i18n>iAdd}"
 					type="Ghost"
 					press="onButtonPressCreate"/>
+					<Button 
+					icon="{i18n>iRefresh}"
+					type="Transparent"
+					press="onButtonPressRefresh"/>
 				</Toolbar>
 			</headerToolbar>
 
