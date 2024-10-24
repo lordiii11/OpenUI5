@@ -76,6 +76,9 @@
 				<Column>
 					<Text text="{i18n>tableNameColumnCreated}"/>
 				</Column>
+				<Column width="5%">
+					<Text text=""/>
+				</Column>
 				<Column width="3%">
 					<Text text=""/>
 				</Column>

@@ -81,6 +81,10 @@ sap.ui.define([
 						new sap.m.Text({
 							text: '{Created}'
 						}),
+						new sap.m.Switch({
+							state: "{= ${Version} === 'D'}",
+							change: this.changeVersion.bind(this)
+						}),
 						new sap.m.Button({
 							icon: this.getResourceBundle().getText('iDecline'),
 							type: 'Transparent',
@@ -115,9 +119,10 @@ sap.ui.define([
 				const sVersion = oBindingContext.getProperty('Version');
 
 					if(sVersion !== 'D') {
-						sap.m.MessageToast.show("Удаление разрешено только для записей с версией 'D'")
+						sap.m.MessageToast.show("Удаление разрешено только для записей с версией 'D'");
+						return;
 					}
-					sKey = this.getModel().createKey('/zjblessons_base_Headers', {
+					const sKey = this.getModel().createKey('/zjblessons_base_Headers', {
 					HeaderID: oBindingContext.getProperty('HeaderID')
 				});
 				
@@ -205,6 +210,22 @@ sap.ui.define([
 
 				this.getModel('worklistView').setProperty('/sItemBarKey', sSelectedKey);
 				this._bindTable();
+			},
+
+			changeVersion(oEvent) {
+				const sVersion = oEvent.getParameter('state') ? 'D' : 'A';
+				const sPath = oEvent.getSource().getBindingContext().getPath();
+				const oModel = this.getModel();
+				const oData = oModel.getProperty(sPath);
+				oData.Version = sVersion;
+				oModel.update(sPath, oData, {
+					success: () => {
+						sap.m.MessageToast.show("Строка успешно обновлена");
+					},
+					error: () => {
+						sap.m.MessageToast.show("Ошибка при обновлении строки");
+					}
+				})
 			}
 		});
 	}
