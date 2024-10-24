@@ -16,7 +16,8 @@ sap.ui.define([
 
 			onInit : function () {
 				const oViewModel = new JSONModel({
-					sCount: '0'
+					sCount: '0',
+					sItemBarKey: 'All'
 				});
 				this.setModel(oViewModel, "worklistView");
 			},
@@ -31,6 +32,7 @@ sap.ui.define([
 					path: '/zjblessons_base_Headers',
 					sorter: [new Sorter('DocumentDate', true)],
 					template: this._getTableTemplate(),
+					filters: this._getTableFilters(),
 					urlParameters: {
 						$select: 'HeaderID,DocumentNumber,DocumentDate,PlantText,RegionText,Description,Created'	
 					},
@@ -48,6 +50,13 @@ sap.ui.define([
 						this.getModel('worklistView').setProperty('/sCount', sCount);
 					}
 				})
+			},
+
+			_getTableFilters() {
+				const oWorklistModel = this.getModel('worklistView');
+				const sSelectedKey = oWorklistModel.getProperty('/sItemBarKey');
+
+				return sSelectedKey === 'All' ? [] : [new Filter('Version', FilterOperator.EQ, 'D')];
 			},
 
 			_getTableTemplate(){
@@ -102,7 +111,12 @@ sap.ui.define([
 			},
 
 			onButtonPressDelete(oEvent) {
-				const oBindingContext = oEvent.getSource().getBindingContext(),
+				const oBindingContext = oEvent.getSource().getBindingContext();
+				const sVersion = oBindingContext.getProperty('Version');
+
+					if(sVersion !== 'D') {
+						sap.m.MessageToast.show("Удаление разрешено только для записей с версией 'D'")
+					}
 					sKey = this.getModel().createKey('/zjblessons_base_Headers', {
 					HeaderID: oBindingContext.getProperty('HeaderID')
 				});
@@ -184,6 +198,13 @@ sap.ui.define([
 			
 				const oTable = this.getView().byId("table");
 				oTable.getBinding("items").filter(aFilters);
+			},
+
+			onIconTabHeaderSelect(oEvent) {
+				const sSelectedKey = oEvent.getParameter('key');
+
+				this.getModel('worklistView').setProperty('/sItemBarKey', sSelectedKey);
+				this._bindTable();
 			}
 		});
 	}
