@@ -4,7 +4,18 @@
 	xmlns:mvc="sap.ui.core.mvc">
 
 	<Page title="{DocumentNumber}">
-
+		<content>
+			<IconTabBar selectedKey="list">
+				<items>
+					<IconTabFilter key="list" text="{i18n>IconTabFilterList}">
+						
+					</IconTabFilter>
+					<IconTabFilter key="form" text="{i18n>IconTabFilterForm}">
+						
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</content>
 	</Page>
 
 </mvc:View>
