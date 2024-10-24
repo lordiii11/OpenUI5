@@ -24,7 +24,8 @@
 			width="auto"
 			growing="true"
 			growingScrollToLoad="true"
-			growingThreshold="15">
+			growingThreshold="15"
+			itemPress="onItemSelect">
 
 			<headerToolbar>
 				<Toolbar>

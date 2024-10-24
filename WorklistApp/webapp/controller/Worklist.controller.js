@@ -227,6 +227,15 @@ sap.ui.define([
 						sap.m.MessageToast.show("Ошибка при обновлении строки");
 					}
 				})
+			},
+
+			onItemSelect(oEvent){
+				const oSelectedItem = oEvent.getParameter('listItem');
+				const sHeaderID = oSelectedItem.getBindingContext().getProperty('HeaderID');
+				
+				this.getRouter().navTo('object', {
+					objectId: sHeaderID
+				})
 			}
 		});
 	}
