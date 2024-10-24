@@ -17,20 +17,16 @@ sap.ui.define([
 			formatter: formatter,
 
 			onInit : function () {
-				var iOriginalBusyDelay,
-					oViewModel = new JSONModel({
-						busy : true,
-						delay : 0
-					});
+				const oViewModel = new JSONModel({
+					busy : true,
+					delay : 0,
+					sSelectedTab: 'List',
+					bEditMode: false
+				});
 
 				this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
 
-				iOriginalBusyDelay = this.getView().getBusyIndicatorDelay();
 				this.setModel(oViewModel, "objectView");
-				this.getOwnerComponent().getModel().metadataLoaded().then(function () {
-						oViewModel.setProperty("/delay", iOriginalBusyDelay);
-					}
-				);
 			},
 
 			onNavBack : function() {
@@ -83,19 +79,68 @@ sap.ui.define([
 					return;
 				}
 
-				var oResourceBundle = this.getResourceBundle(),
-					oObject = oView.getBindingContext().getObject(),
-					sObjectId = oObject.HeaderID,
-					sObjectName = oObject.DocumentNumber;
+				var sVersion = oElementBinding.getBoundContext().getProperty("Version");
+				oViewModel.setProperty("/bDeleteVisible", sVersion === 'D');
+			},
 
-				oViewModel.setProperty("/busy", false);
+			onEditButtonPress() {
+				this._setEditMode(true);
+			},
 
-				oViewModel.setProperty("/shareSendEmailSubject",
-				oResourceBundle.getText("shareSendEmailObjectSubject", [sObjectId]));
-				oViewModel.setProperty("/shareSendEmailMessage",
-				oResourceBundle.getText("shareSendEmailObjectMessage", [sObjectName, sObjectId, location.href]));
+			onSaveButtonPress() {
+				const oModel = this.getModel();
+				const oView = this.getView();
+				const oPendingChanges = oModel.getPendingChanges();
+				const sPath = oView.getBindingContext().getPath().slice(1);
+				
+				if(oPendingChanges.hasOwnProperty(sPath)) {
+					oView.setBusy(true);
+					oModel.submitChanges({
+						success: () => {
+							oView.setBusy(false);
+						},
+						error: () => {
+							oView.setBusy(false);
+						}
+					});
+				} 
+				this._setEditMode(false);
+			},
+
+			onCancelButtonPress() {
+				this._setEditMode(false);
+				this.getModel().resetChanges();
+			},
+
+			onDeleteButtonPress() {
+				const oView = this.getView();
+				const sPath = oView.getBindingContext().getPath();
+
+				new sap.m.MessageBox.confirm('Вы уверены, что хотите удалить эту запись?', {
+					title: 'Подтверждение удаления',
+					actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],
+					onClose: function (sAction) {
+						if(sAction === sap.m.MessageBox.Action.OK) {
+							oView.setBusy(true);
+							this.getModel().remove(sPath, {
+								success: function ()  {
+									oView.setBusy(false);
+									sap.m.MessageToast.show("Запись успешно удалена");
+									this.onNavBack();
+								}.bind(this),
+								error: function () {
+									sap.m.MessageToast.show("Ошибка при удалении записи");
+								}.bind(this)
+							})
+						}
+					}.bind(this)
+				})
+			},
+
+			_setEditMode(bValue) {
+				const oModel = this.getModel("objectView");
+				oModel.setProperty('/bEditMode', bValue);
 			}
-
 		});
 
 	}

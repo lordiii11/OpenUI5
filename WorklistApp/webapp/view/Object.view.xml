@@ -3,14 +3,47 @@
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
 
-	<Page title="{DocumentNumber}">
+	<Page>
+		<customHeader>
+			<Bar>
+				<contentLeft>
+					<Title text="{DocumentNumber}"/>
+				</contentLeft>
+				<contentRight>
+					<Button 
+						type="Emphasized" 
+						text="{i18n>ButtonEdit}" 
+						icon="{i18n>iButtonEdit}" 
+						visible="{= !${objectView>/bEditMode}}" 
+						press="onEditButtonPress"/>
+					<Button 
+						type="Emphasized" 
+						text="{i18n>ButtonSave}" 
+						icon="{i18n>iButtonSave}" 
+						visible="{= ${objectView>/bEditMode}}" 
+						press="onSaveButtonPress"/>
+					<Button 
+						type="Transparent" 
+						text="{i18n>ButtonCancel}" 
+						icon="{i18n>iButtonCancel}" 
+						visible="{= ${objectView>/bEditMode}}" 
+						press="onCancelButtonPress"/>
+					<Button 
+						type="Reject" 
+						text="{i18n>ButtonDelete}" 
+						icon="{i18n>iButtonDelete}" 
+						visible="{= !${objectView>/bEditMode} &amp;&amp; ${objectView>/bDeleteVisible}}" 
+						press="onDeleteButtonPress"/>
+				</contentRight>
+			</Bar>
+		</customHeader>
 		<content>
-			<IconTabBar selectedKey="list">
+			<IconTabBar selectedKey="= ${objectView>/sSelectedTab}" headerMode="Inline">
 				<items>
-					<IconTabFilter key="list" text="{i18n>IconTabFilterList}">
+					<IconTabFilter key="list" text="{i18n>IconTabFilterList}" icon="{i18n>iIconTabFilterList}">
 						
 					</IconTabFilter>
-					<IconTabFilter key="form" text="{i18n>IconTabFilterForm}">
+					<IconTabFilter key="form" text="{i18n>IconTabFilterForm}" icon="{i18n>iIconTabFilterForm}">
 						
 					</IconTabFilter>
 				</items>
