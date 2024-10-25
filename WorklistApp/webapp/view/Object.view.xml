@@ -1,7 +1,8 @@
 <mvc:View xmlns:core="sap.ui.core"
 	controllerName="zjblessons.WorklistApp.controller.Object"
 	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc">
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.ui.layout.form">
 
 	<Page>
 		<customHeader>
@@ -85,7 +86,79 @@
 						</VBox>
 					</IconTabFilter>
 					<IconTabFilter key="form" text="{i18n>IconTabFilterForm}" icon="{i18n>iIconTabFilterForm}">
-						
+						<VBox class="sapUiSmallMargin">
+							<f:Form
+								id="FormChange354wideDual"
+								editable="true"
+							>
+								<f:title>
+									<core:Title text="Address" />
+								</f:title>
+								<f:layout>
+									<f:ResponsiveGridLayout
+										labelSpanXL="4"
+										labelSpanL="3"
+										labelSpanM="4"
+										labelSpanS="12"
+										adjustLabelSpan="false"
+										emptySpanXL="0"
+										emptySpanL="4"
+										emptySpanM="0"
+										emptySpanS="0"
+										columnsXL="2"
+										columnsL="1"
+										columnsM="1"
+										singleContainerFullSize="false"
+									/>
+								</f:layout>
+								<f:formContainers>
+									<f:FormContainer title="Main">
+										<f:formElements>
+											<f:FormElement label="{i18n>tableNameColumnDocumentNumber}">
+												<Text text="{DocumentNumber}"/>
+											</f:FormElement>
+											<f:FormElement label="{i18n>tableNameColumnDocumentDate}">
+												<Text text="{DocumentDate}"/>
+											</f:FormElement>
+											<f:FormElement label="{i18n>tableNameColumnPlantText}">
+												<Text text="{PlantText}"/>
+											</f:FormElement>
+											<f:FormElement label="{i18n>tableNameColumnRegionText}">
+												<Text text="{RegionText}"/>
+											</f:FormElement>
+											<f:FormElement label="{i18n>tableNameColumnDescription}">
+												<Text text="{Description}"/>
+											</f:FormElement>
+										</f:formElements>
+									</f:FormContainer>
+									<f:FormContainer title="Details">
+										<f:formElements>
+											<f:FormElement label="{i18n>tableNameColumnCreated}">
+												<Text text="{
+													path: 'Created',
+													type: 'sap.ui.model.type.Date',
+													formatOptions: {
+														style: 'short'
+													}
+												}"/>
+											</f:FormElement>
+											<f:FormElement label="{i18n>tableNameColumnCreatedByFullName}">
+												<Text text="{CreatedByFullName}"/>
+											</f:FormElement>
+											<f:FormElement label="{i18n>tableNameColumnModified}">
+												<Text text="{
+													path: 'Modified',
+													formatter: '.formatter.modifiedFormatter'
+												}"/>
+											</f:FormElement>
+											<f:FormElement label="{i18n>tableNameColumnModifiedByFullName}">
+												<Text text="{ModifiedByFullName}"/>
+											</f:FormElement>
+										</f:formElements>
+									</f:FormContainer>
+								</f:formContainers>
+							</f:Form>
+						</VBox>
 					</IconTabFilter>
 				</items>
 			</IconTabBar>
