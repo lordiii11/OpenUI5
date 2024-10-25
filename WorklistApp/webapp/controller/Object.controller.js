@@ -3,12 +3,14 @@ sap.ui.define([
 		"zjblessons/WorklistApp/controller/BaseController",
 		"sap/ui/model/json/JSONModel",
 		"sap/ui/core/routing/History",
-		"zjblessons/WorklistApp/model/formatter"
+		"zjblessons/WorklistApp/model/formatter",
+		"sap/ui/core/Fragment"
 	], function (
 		BaseController,
 		JSONModel,
 		History,
-		formatter
+		formatter,
+		Fragment
 	) {
 		"use strict";
 
@@ -139,7 +141,45 @@ sap.ui.define([
 
 			_setEditMode(bValue) {
 				const oModel = this.getModel("objectView");
+				const oIconTabBar = this.getView().byId('idIconTabBar')._getIconTabHeader();
+
+				oIconTabBar.setBlocked(bValue);
 				oModel.setProperty('/bEditMode', bValue);
+			},
+
+			onBeforeRendering() {
+				this._bindTemplate();
+			},
+
+			async _bindTemplate() {
+				const oComboBox = this.getView().byId("idComboBox");
+				const oTemplate = this._getPlantTemplate();
+
+				oComboBox.bindItems({
+					path: '/zjblessons_base_Headers',
+					template: await oTemplate,
+					events: {
+						dataReceived: () => {
+							oComboBox.setBusy(false);
+						},
+						dataRequested: () => {
+							oComboBox.setBusy(true);
+						}
+					}
+				})
+			},
+
+			async _getPlantTemplate() {
+				this._pPlantTemplate ??= await Fragment.load({
+					name: 'zjblessons.WorklistApp.view.fragment.template.ComboBoxItem',
+					id: this.getView().getId(),
+					controller: this
+				}).then((oTemplate) => {
+					this.getView().addDependent(oTemplate);
+					return oTemplate;
+				})
+
+				return this._pPlantTemplate;
 			}
 		});
 

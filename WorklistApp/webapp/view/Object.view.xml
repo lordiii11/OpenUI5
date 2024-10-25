@@ -1,4 +1,4 @@
-<mvc:View
+<mvc:View xmlns:core="sap.ui.core"
 	controllerName="zjblessons.WorklistApp.controller.Object"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
@@ -7,7 +7,7 @@
 		<customHeader>
 			<Bar>
 				<contentLeft>
-					<Title text="{DocumentNumber}"/>
+					<Title text="{= ${objectView>/bEditMode} ? 'EditMode': ${DocumentNumber}}"/>
 				</contentLeft>
 				<contentRight>
 					<Button 
@@ -38,10 +38,51 @@
 			</Bar>
 		</customHeader>
 		<content>
-			<IconTabBar selectedKey="= ${objectView>/sSelectedTab}" headerMode="Inline">
+			<IconTabBar 
+				id="idIconTabBar"
+				selectedKey="= ${objectView>/sSelectedTab}" 
+				headerMode="Inline">
 				<items>
 					<IconTabFilter key="list" text="{i18n>IconTabFilterList}" icon="{i18n>iIconTabFilterList}">
-						
+						<VBox>
+							<List>
+								<items>
+									<CustomListItem>
+										<content>
+											<VBox class="sapUiContentPadding">
+											<CustomListItem>
+												<Label labelFor="idDocumentNumberInput" text="{i18n>tableNameColumnDocumentNumber}"/>
+												<Input id="idDocumentNumberInput" editable="{= ${objectView>/bEditMode}}" value="{DocumentNumber}"/>
+											</CustomListItem>
+											<CustomListItem>
+												<Label labelFor="idRegionTextSelect" text="{i18n>tableNameColumnRegionText}"/>
+												<Select 
+													id="idRegionTextSelect"
+													selectedKey="{RegionID}"
+													items= "{path: '/zjblessons_base_Headers'}"
+													editable="{= ${objectView>/bEditMode}}">
+													<items>
+														<core:Item key="{RegionID}" text="{RegionText}"/>
+													</items>
+												</Select>
+											</CustomListItem>
+											<CustomListItem>
+												<Label labelFor="idComboBox" text="{i18n>tableNameColumnPlantText}"/>
+												<ComboBox 
+												id="idComboBox"
+												selectedKey="{PlantID}"
+												editable="{= ${objectView>/bEditMode}}"/>
+											</CustomListItem>
+											<CustomListItem>
+												<Label labelFor="idDescriptionInput" text="{i18n>tableNameColumnDescription}"/>
+												<Input id="idDescriptionInput" editable="{= ${objectView>/bEditMode}}" value="{Description}"/>
+											</CustomListItem>
+											</VBox>
+										</content>
+									</CustomListItem>
+								</items>
+							</List>
+						</VBox>
 					</IconTabFilter>
 					<IconTabFilter key="form" text="{i18n>IconTabFilterForm}" icon="{i18n>iIconTabFilterForm}">
 						
